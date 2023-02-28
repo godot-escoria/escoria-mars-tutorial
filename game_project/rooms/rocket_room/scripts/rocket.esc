@@ -1,0 +1,7 @@
+:look
+set_angle robot 180
+say current_player  "That's my rocket"
+say current_player "It's locked, and I don't have a key"
+
+:pickup
+say current_player "That's too heavy to pick up."

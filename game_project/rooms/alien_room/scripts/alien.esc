@@ -1,0 +1,56 @@
+:talk
+# The next 3 lines always show at the start of each conversation
+say current_player "Greetings."
+say alien "Hello, what can I do for you?"
+
+# A "?" tells Escoria that after this is conversation code
+?
+	# First conversation option
+	- "What is your name?" [!name_known]
+		say current_player 	"What is your name?"
+		say alien 	"My friends call me Zyxxx, you can call me sir."
+		set_global name_known true
+	# Second conversation option
+	- "I'm locked out of my rocket"
+		say current_player "I'm locked out of my rocket."
+		say current_player "Could you call me a locksmith?" 
+		say alien 	"There's no locksmith, but I could make a key for you."
+		# This indented "?" will show a new set of dialogue options to the player
+		?
+		- "How long will it take?"
+			say current_player	"Will it take long?"
+			say alien "No."
+		- "How much will it cost?"
+			say current_player	"I haven't got any money, how will I pay for it?"
+			say alien "I can't leave my shop but it's time for my lunch."
+			say alien "If you could search the rocks where you came from"
+			say alien "and find me a bug, I'll swap you a key for it."
+			rand_global rock_with_bug 2
+			print "The bug is in rock {rock_with_bug}"
+			set_global bugs_can_be_found true
+		- "Bye"
+			say current_player	"Bye!"
+			say alien	"Bye!"
+			# Leave the conversation entirely
+			stop
+		!
+	# Third conversation option
+	- "I've got to go."
+		say current_player	"I've got to go."
+		say alien	"Bye!"
+		# Leave the conversation entirely
+		stop
+!
+
+# These commands run when you give the bug to the alien
+:use bug
+set_gui_visible false
+accept_input SKIP
+inventory_remove bug
+say alien "Mmmm, delicious! Here's your key."
+inventory_add key
+walk_block robot rocket_exit
+set_global game_complete true
+set_gui_visible true
+change_scene "res://rooms/rocket_room/rocket_room.tscn"
+accept_input ALL

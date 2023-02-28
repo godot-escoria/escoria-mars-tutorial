@@ -1,0 +1,170 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://rooms/rocket_room/background.png" type="Texture" id=1]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_background.gd" type="Script" id=2]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_room.gd" type="Script" id=3]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_terrain.gd" type="Script" id=4]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_location.gd" type="Script" id=5]
+[ext_resource path="res://characters/robot.scn" type="PackedScene" id=6]
+[ext_resource path="res://rooms/alien_room/scene_scale.png" type="Texture" id=7]
+[ext_resource path="res://rooms/rocket_room/ship.png" type="Texture" id=8]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_item.gd" type="Script" id=9]
+[ext_resource path="res://rooms/rocket_room/rock1.png" type="Texture" id=10]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_exit.gd" type="Script" id=11]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 607, 789, 813, 760, 980, 760, 894, 956, 691, 969, 78, 525, 1836, 520, 985, 696, 804, 694, 1846, 1039, 887, 1024, 602, 715, 419, 711, 69, 1008, 414, 794, 692, 1027 )
+polygons = [ PoolIntArray( 0, 1, 2, 3, 4 ), PoolIntArray( 5, 6, 7, 8 ), PoolIntArray( 7, 6, 9, 2 ), PoolIntArray( 2, 9, 10, 3 ), PoolIntArray( 1, 0, 11, 8 ), PoolIntArray( 5, 8, 11, 12 ), PoolIntArray( 13, 5, 12, 14 ), PoolIntArray( 15, 13, 14, 0, 4 ) ]
+outlines = [ PoolVector2Array( 78, 525, 1836, 520, 1846, 1039, 887, 1024, 894, 956, 691, 969, 692, 1027, 69, 1008 ), PoolVector2Array( 804, 694, 813, 760, 980, 760, 985, 696 ), PoolVector2Array( 419, 711, 602, 715, 607, 789, 414, 794 ) ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 65, 111.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 103.5, 273.5 )
+
+[node name="rocket_room" type="Node2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 1010.0 ]
+}
+global_id = "rocket_room"
+esc_script = "res://rooms/rocket_room/scripts/rocket_room.esc"
+player_scene = ExtResource( 6 )
+
+[node name="Background" type="TextureRect" parent="."]
+mouse_filter = 2
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="WalkableArea" type="Navigation2D" parent="."]
+script = ExtResource( 4 )
+scales = ExtResource( 7 )
+scale_min = 0.8
+scale_max = 1.5
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="WalkableArea"]
+navpoly = SubResource( 1 )
+
+[node name="RoomObjects" type="Node2D" parent="."]
+
+[node name="rocket" type="Area2D" parent="RoomObjects"]
+pause_mode = 1
+position = Vector2( 1500, 571 )
+script = ExtResource( 9 )
+global_id = "rocket"
+esc_script = "res://rooms/rocket_room/scripts/rocket.esc"
+player_orients_on_arrival = false
+tooltip_name = "rocket"
+default_action = "look"
+combine_when_selected_action_is_in = [  ]
+inventory_texture = ExtResource( 8 )
+dialog_color = Color( 1, 1, 1, 1 )
+animations = null
+
+[node name="interact_position" type="Position2D" parent="RoomObjects/rocket"]
+position = Vector2( -121, 131 )
+script = ExtResource( 5 )
+global_id = "rocket_door"
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="RoomObjects/rocket"]
+polygon = PoolVector2Array( -216, 59, 182, 201, 227, 116, 136, -1, 29, -75, -92, -193, -220, -94 )
+
+[node name="Sprite" type="Sprite" parent="RoomObjects/rocket"]
+texture = ExtResource( 8 )
+
+[node name="rock" type="Area2D" parent="RoomObjects"]
+pause_mode = 1
+position = Vector2( 511, 664 )
+z_index = 777
+script = ExtResource( 9 )
+global_id = "rock"
+esc_script = "res://rooms/rocket_room/scripts/rock1.esc"
+interaction_direction = 6
+tooltip_name = "rock"
+default_action = "look"
+combine_when_selected_action_is_in = [  ]
+inventory_texture = ExtResource( 10 )
+dialog_color = Color( 1, 1, 1, 1 )
+animations = null
+
+[node name="interact_position" type="Position2D" parent="RoomObjects/rock"]
+position = Vector2( 152, 94 )
+script = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/rock"]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="RoomObjects/rock"]
+texture = ExtResource( 10 )
+
+[node name="rock2" type="Area2D" parent="RoomObjects"]
+pause_mode = 1
+position = Vector2( 896, 628 )
+z_index = 737
+script = ExtResource( 9 )
+global_id = "rock2"
+esc_script = "res://rooms/rocket_room/scripts/rock2.esc"
+interaction_direction = 6
+tooltip_name = "rock"
+default_action = "look"
+combine_when_selected_action_is_in = [  ]
+inventory_texture = ExtResource( 10 )
+dialog_color = Color( 1, 1, 1, 1 )
+animations = null
+
+[node name="interact_position" type="Position2D" parent="RoomObjects/rock2"]
+position = Vector2( 152, 94 )
+script = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/rock2"]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="RoomObjects/rock2"]
+texture = ExtResource( 10 )
+
+[node name="rock3" type="Area2D" parent="RoomObjects"]
+pause_mode = 1
+position = Vector2( 787, 899 )
+z_index = 1010
+script = ExtResource( 9 )
+global_id = "rock3"
+esc_script = "res://rooms/rocket_room/scripts/rock3.esc"
+interaction_direction = 6
+tooltip_name = "rock"
+default_action = "look"
+combine_when_selected_action_is_in = [  ]
+inventory_texture = ExtResource( 10 )
+dialog_color = Color( 1, 1, 1, 1 )
+animations = null
+
+[node name="interact_position" type="Position2D" parent="RoomObjects/rock3"]
+position = Vector2( 152, 94 )
+script = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/rock3"]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="RoomObjects/rock3"]
+texture = ExtResource( 10 )
+
+[node name="to_alien_room" type="Area2D" parent="RoomObjects"]
+script = ExtResource( 11 )
+global_id = "alien_exit"
+tooltip_name = "Go West"
+target_scene = "res://rooms/alien_room/alien_room.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/to_alien_room"]
+position = Vector2( 143.5, 776.5 )
+shape = SubResource( 3 )
+
+[node name="alien_room_entry" type="Position2D" parent="RoomObjects"]
+position = Vector2( 151, 579 )
+script = ExtResource( 5 )
+global_id = "alien_room_entry"
+
+[node name="StartPos" type="Position2D" parent="."]
+position = Vector2( 1224, 709 )
+script = ExtResource( 5 )
+global_id = "rocket_room_start_pos"
+is_start_location = true

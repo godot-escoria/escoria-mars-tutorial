@@ -1,0 +1,5 @@
+:init
+show_menu main
+
+:newgame
+change_scene res://rooms/intro_room/intro_room.tscn

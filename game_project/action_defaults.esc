@@ -1,0 +1,2 @@
+:use
+say current_player "I can't use this!"

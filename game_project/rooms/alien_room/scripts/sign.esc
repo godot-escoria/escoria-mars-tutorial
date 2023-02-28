@@ -1,0 +1,9 @@
+:use
+> [!switch_is_on]
+	set_state switch signon 
+	set_global switch_is_on true
+	stop
+> [switch_is_on]
+	set_state switch signoff
+	set_global switch_is_on false
+	stop

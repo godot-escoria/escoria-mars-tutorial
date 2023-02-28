@@ -1,0 +1,17 @@
+:look
+> [eq bugs_can_be_found true]
+	> [i/bug]
+		say current_player "I've got a bug. I need to take it to the alien."
+		stop
+		
+	> [eq rock_with_bug 0]	
+		say current_player "There's a bug running around on the rock."
+		say current_player "I've picked it up."
+		inventory_add bug
+		stop
+		
+	say current_player "There's no bug here. Maybe I should try another rock."
+	stop
+		
+say current_player "There are tiny little bug footprints on the rock."
+say current_player "There's no bugs here right now though."

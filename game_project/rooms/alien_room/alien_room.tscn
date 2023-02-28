@@ -1,0 +1,155 @@
+[gd_scene load_steps=26 format=2]
+
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_background.gd" type="Script" id=1]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_room.gd" type="Script" id=2]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_terrain.gd" type="Script" id=3]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_location.gd" type="Script" id=4]
+[ext_resource path="res://characters/robot.scn" type="PackedScene" id=5]
+[ext_resource path="res://rooms/alien_room/background.png" type="Texture" id=6]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_exit.gd" type="Script" id=7]
+[ext_resource path="res://rooms/alien_room/scene_scale.png" type="Texture" id=8]
+[ext_resource path="res://rooms/alien_room/room2hut.png" type="Texture" id=9]
+[ext_resource path="res://rooms/alien_room/room2table.png" type="Texture" id=10]
+[ext_resource path="res://rooms/alien_room/rock4.png" type="Texture" id=11]
+[ext_resource path="res://rooms/alien_room/sign-unlit.png" type="Texture" id=12]
+[ext_resource path="res://rooms/alien_room/sign-lit.png" type="Texture" id=13]
+[ext_resource path="res://rooms/alien_room/switch.png" type="Texture" id=14]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_item.gd" type="Script" id=15]
+[ext_resource path="res://rooms/rocket_room/stars2.png" type="Texture" id=16]
+[ext_resource path="res://rooms/rocket_room/stars4.png" type="Texture" id=17]
+[ext_resource path="res://rooms/rocket_room/stars1.png" type="Texture" id=18]
+[ext_resource path="res://rooms/rocket_room/stars3.png" type="Texture" id=19]
+[ext_resource path="res://characters/alien.scn" type="PackedScene" id=20]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 1883, 800, 1427, 936, 837, 823, 689, 697, 678, 619, 1879, 514, 1376, 1025, 354, 1017, 527, 895, 196, 697, 298, 941, 49, 904, 51, 524, 204, 633 )
+polygons = [ PoolIntArray( 0, 1, 2, 3, 4, 5 ), PoolIntArray( 2, 1, 6, 7, 8 ), PoolIntArray( 9, 8, 7, 10 ), PoolIntArray( 9, 10, 11, 12 ), PoolIntArray( 13, 9, 12 ), PoolIntArray( 13, 12, 5, 4 ) ]
+outlines = [ PoolVector2Array( 51, 524, 49, 904, 298, 941, 354, 1017, 1376, 1025, 1427, 936, 1883, 800, 1879, 514 ), PoolVector2Array( 196, 697, 527, 895, 837, 823, 689, 697, 678, 619, 204, 633 ) ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 112, 157 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 18 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 17 ) ],
+"loop": true,
+"name": "default",
+"speed": 3.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 12, 7.5 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 12 ) ],
+"loop": false,
+"name": "signoff",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 12 ) ],
+"loop": true,
+"name": "signon",
+"speed": 3.0
+} ]
+
+[node name="alien_room" type="Node2D"]
+script = ExtResource( 2 )
+global_id = "alien_room"
+esc_script = "res://rooms/alien_room/scripts/alien_room.esc"
+player_scene = ExtResource( 5 )
+
+[node name="Background" type="TextureRect" parent="."]
+mouse_filter = 2
+texture = ExtResource( 6 )
+script = ExtResource( 1 )
+
+[node name="WalkableArea" type="Navigation2D" parent="."]
+script = ExtResource( 3 )
+scales = ExtResource( 8 )
+scale_min = 0.8
+scale_max = 1.5
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="WalkableArea"]
+navpoly = SubResource( 1 )
+
+[node name="RoomObjects" type="Node2D" parent="."]
+
+[node name="to_rocket_room" type="Area2D" parent="RoomObjects"]
+script = ExtResource( 7 )
+global_id = "rocket_exit"
+tooltip_name = "Go east"
+target_scene = "res://rooms/rocket_room/rocket_room.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/to_rocket_room"]
+position = Vector2( 1811, 656 )
+shape = SubResource( 2 )
+
+[node name="Room2Hut" type="Sprite" parent="RoomObjects"]
+position = Vector2( 419, 457 )
+texture = ExtResource( 9 )
+
+[node name="Room2Table" type="Sprite" parent="RoomObjects"]
+position = Vector2( 662, 818 )
+z_index = 830
+texture = ExtResource( 10 )
+
+[node name="Rock4" type="Sprite" parent="RoomObjects"]
+position = Vector2( 155, 973 )
+texture = ExtResource( 11 )
+
+[node name="Rock5" type="Sprite" parent="RoomObjects"]
+position = Vector2( 1773, 860 )
+texture = ExtResource( 11 )
+
+[node name="Rock6" type="Sprite" parent="RoomObjects"]
+position = Vector2( 1575, 931 )
+texture = ExtResource( 11 )
+
+[node name="stars" type="AnimatedSprite" parent="RoomObjects"]
+position = Vector2( 965, 198 )
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="switch" type="Area2D" parent="RoomObjects"]
+pause_mode = 1
+position = Vector2( 622, 787 )
+z_index = 840
+script = ExtResource( 15 )
+global_id = "switch"
+esc_script = "res://rooms/alien_room/scripts/sign.esc"
+tooltip_name = "switch"
+default_action = "use"
+combine_when_selected_action_is_in = [  ]
+inventory_texture = ExtResource( 14 )
+dialog_color = Color( 1, 1, 1, 1 )
+animations = null
+
+[node name="interact_position" type="Position2D" parent="RoomObjects/switch"]
+position = Vector2( 60, 96 )
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/switch"]
+shape = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="RoomObjects/switch"]
+texture = ExtResource( 14 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="RoomObjects/switch"]
+position = Vector2( -321, -246 )
+frames = SubResource( 4 )
+animation = "signoff"
+
+[node name="alien" parent="RoomObjects" instance=ExtResource( 20 )]
+position = Vector2( 626, 780 )
+esc_script = "res://rooms/alien_room/scripts/alien.esc"
+interaction_direction = 6
+
+[node name="StartPos" type="Position2D" parent="."]
+position = Vector2( 1655, 592 )
+script = ExtResource( 4 )
+global_id = "alien_room_start_pos"
+is_start_location = true
+
+[node name="Node2D" type="Node2D" parent="."]

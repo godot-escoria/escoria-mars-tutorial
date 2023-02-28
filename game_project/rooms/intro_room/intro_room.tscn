@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://rooms/intro_room/intro.png" type="Texture" id=1]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_background.gd" type="Script" id=2]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_room.gd" type="Script" id=3]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_exit.gd" type="Script" id=4]
+[ext_resource path="res://addons/escoria-core/game/core-scripts/esc_location.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 964, 546.5 )
+
+[node name="intro_room" type="Node2D"]
+script = ExtResource( 3 )
+global_id = "intro_room"
+esc_script = "res://rooms/intro_room/scripts/intro.esc"
+
+[node name="Background" type="TextureRect" parent="."]
+mouse_filter = 2
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="RoomObjects" type="Node2D" parent="."]
+
+[node name="ESCExit" type="Area2D" parent="RoomObjects"]
+script = ExtResource( 4 )
+global_id = "intro_exit"
+target_scene = "res://rooms/rocket_room/rocket_room.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomObjects/ESCExit"]
+position = Vector2( 954, 536.5 )
+shape = SubResource( 1 )
+
+[node name="StartPos" type="Position2D" parent="."]
+position = Vector2( 960, 540 )
+script = ExtResource( 5 )
+global_id = "intro_room_start_pos"
+is_start_location = true
